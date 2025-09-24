@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import '../models/personagem.dart';
 import '../models/inimigo.dart';
 import '../models/item.dart';
@@ -35,8 +36,8 @@ class GameState extends ChangeNotifier {
   // Estado do jogo
   Personagem? _personagemAtivo;
   Inimigo? _inimigoAtual;
-  List<Item> _inventario = [];
-  List<String> _historicoGlobal = [];
+  final List<Item> _inventario = <Item>[];
+  final List<String> _historicoGlobal = <String>[];
   bool _emCombate = false;
 
   // Getters
@@ -113,6 +114,10 @@ class GameState extends ChangeNotifier {
         _personagemAtivo!.recuperarMana(item.valor);
         adicionarHistorico('${_personagemAtivo!.nome} usou ${item.nome} e recuperou ${item.valor} Mana!');
         break;
+      case TipoItem.equipamento:
+        // Placeholder para equipamentos futuros
+        adicionarHistorico('${_personagemAtivo!.nome} equipou ${item.nome}!');
+        break;
     }
     
     _inventario.remove(item);
@@ -125,10 +130,12 @@ class GameState extends ChangeNotifier {
   }
 
   void adicionarHistorico(String acao) {
-    _historicoGlobal.insert(0, '${DateTime.now().toString().substring(11, 19)} - $acao');
+    String timestamp = DateTime.now().toString().substring(11, 19);
+    _historicoGlobal.insert(0, '$timestamp - $acao');
     if (_historicoGlobal.length > 50) {
       _historicoGlobal.removeLast();
     }
+    notifyListeners();
   }
 
   void limparHistorico() {
@@ -174,7 +181,7 @@ class GameState extends ChangeNotifier {
       _personagemAtivo!.ganharXP(xpGanho);
       adicionarHistorico('Vitória! Ganhou $xpGanho XP!');
       
-      // Chance de ganhar item
+      // Chance de ganhar item (33% de chance)
       if (DateTime.now().millisecond % 3 == 0) {
         Item itemGanho = _gerarItemAleatorio();
         adicionarItem(itemGanho);
@@ -186,25 +193,26 @@ class GameState extends ChangeNotifier {
     
     _emCombate = false;
     _inimigoAtual = null;
+    notifyListeners();
   }
 
   Inimigo _gerarInimigoAleatorio() {
-    final inimigos = [
-      Inimigo(nome: 'Goblin', hp: 40, ataque: 8, defesa: 2, xpRecompensa: 15),
-      Inimigo(nome: 'Orc', hp: 60, ataque: 12, defesa: 5, xpRecompensa: 25),
-      Inimigo(nome: 'Troll', hp: 100, ataque: 15, defesa: 8, xpRecompensa: 40),
-      Inimigo(nome: 'Dragão Menor', hp: 80, ataque: 18, defesa: 6, xpRecompensa: 35),
-    ];
+    // Se tiver personagem ativo, gera inimigo baseado no nível
+    if (_personagemAtivo != null) {
+      return Inimigo.gerarPorNivel(_personagemAtivo!.level);
+    }
     
-    int index = DateTime.now().millisecond % inimigos.length;
-    return inimigos[index];
+    // Caso contrário, gera aleatório
+    return Inimigo.gerarAleatorio();
   }
 
   Item _gerarItemAleatorio() {
-    final itens = [
+    final itens = <Item>[
       Item(nome: 'Poção de Vida', tipo: TipoItem.cura, valor: 30),
       Item(nome: 'Poção de Mana', tipo: TipoItem.mana, valor: 25),
       Item(nome: 'Poção Grande de Vida', tipo: TipoItem.cura, valor: 50),
+      Item(nome: 'Elixir de Mana', tipo: TipoItem.mana, valor: 40),
+      Item(nome: 'Poção de Cura Menor', tipo: TipoItem.cura, valor: 20),
     ];
     
     int index = DateTime.now().millisecond % itens.length;

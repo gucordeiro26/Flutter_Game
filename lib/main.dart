@@ -223,7 +223,7 @@ class HomePage extends StatelessWidget {
       child: ElevatedButton(
         onPressed: enabled ? () => _abrir(context, page) : null,
         style: ElevatedButton.styleFrom(
-          backgroundColor: enabled ? color.shade600 : Colors.grey.shade400,
+          backgroundColor: enabled ? color : Colors.grey.shade400,
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),

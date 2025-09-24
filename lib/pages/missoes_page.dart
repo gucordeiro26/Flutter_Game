@@ -11,9 +11,8 @@ class MissoesPage extends StatefulWidget {
   State<MissoesPage> createState() => _MissoesPageState();
 }
 
-class _MissoesPageState extends State<MissoesPage> 
+class _MissoesPageState extends State<MissoesPage>
     with TickerProviderStateMixin {
-  
   late AnimationController _shakeController;
   late AnimationController _attackController;
   late Animation<double> _shakeAnimation;
@@ -30,7 +29,7 @@ class _MissoesPageState extends State<MissoesPage>
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-    
+
     _shakeAnimation = Tween<double>(begin: 0.0, end: 10.0).animate(
       CurvedAnimation(parent: _shakeController, curve: Curves.elasticIn),
     );
@@ -81,9 +80,9 @@ class _MissoesPageState extends State<MissoesPage>
 
               // Arena de combate
               Expanded(
-                child: gameState.emCombate 
-                  ? _buildCombatArena(gameState)
-                  : _buildPreCombat(gameState),
+                child: gameState.emCombate
+                    ? _buildCombatArena(gameState)
+                    : _buildPreCombat(gameState),
               ),
 
               // Ações disponíveis
@@ -135,7 +134,7 @@ class _MissoesPageState extends State<MissoesPage>
 
   Widget _buildPersonagemStatus(GameState gameState) {
     final personagem = gameState.personagemAtivo!;
-    
+
     return Row(
       children: [
         // Avatar do personagem
@@ -153,9 +152,9 @@ class _MissoesPageState extends State<MissoesPage>
             ),
           ),
         ),
-        
+
         const SizedBox(width: 16),
-        
+
         // Status bars
         Expanded(
           child: Column(
@@ -214,9 +213,9 @@ class _MissoesPageState extends State<MissoesPage>
             width: 200,
             height: 60,
             child: ElevatedButton(
-              onPressed: gameState.personagemAtivo!.estaMorto 
-                ? null 
-                : () => gameState.iniciarCombate(),
+              onPressed: gameState.personagemAtivo!.estaMorto
+                  ? null
+                  : () => gameState.iniciarCombate(),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red.shade600,
                 foregroundColor: Colors.white,
@@ -241,7 +240,7 @@ class _MissoesPageState extends State<MissoesPage>
   Widget _buildCombatArena(GameState gameState) {
     final inimigo = gameState.inimigoAtual!;
     final personagem = gameState.personagemAtivo!;
-    
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -262,7 +261,8 @@ class _MissoesPageState extends State<MissoesPage>
                         decoration: BoxDecoration(
                           color: Colors.red.shade100,
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.red.shade300, width: 3),
+                          border:
+                              Border.all(color: Colors.red.shade300, width: 3),
                         ),
                         child: Center(
                           child: Text(
@@ -305,7 +305,7 @@ class _MissoesPageState extends State<MissoesPage>
               },
             ),
           ),
-          
+
           // VS
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -322,7 +322,7 @@ class _MissoesPageState extends State<MissoesPage>
               ),
             ),
           ),
-          
+
           // Personagem
           Expanded(
             child: AnimatedBuilder(
@@ -347,7 +347,8 @@ class _MissoesPageState extends State<MissoesPage>
                         decoration: BoxDecoration(
                           color: Colors.indigo.shade100,
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.indigo.shade300, width: 3),
+                          border: Border.all(
+                              color: Colors.indigo.shade300, width: 3),
                         ),
                         child: Center(
                           child: Text(
@@ -391,13 +392,13 @@ class _MissoesPageState extends State<MissoesPage>
           children: [
             Expanded(
               child: ElevatedButton.icon(
-                onPressed: personagem.estaMorto 
-                  ? null 
-                  : () {
-                      _animateAttack();
-                      gameState.atacar();
-                    },
-                icon: const Icon(Icons.sword),
+                onPressed: personagem.estaMorto
+                    ? null
+                    : () {
+                        _animateAttack();
+                        gameState.atacar();
+                      },
+                icon: const Icon(Icons.sports_martial_arts),
                 label: const Text('ATACAR'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red.shade600,
@@ -410,11 +411,11 @@ class _MissoesPageState extends State<MissoesPage>
             Expanded(
               child: ElevatedButton.icon(
                 onPressed: personagem.estaMorto || !personagem.podeUsarMagia(20)
-                  ? null 
-                  : () {
-                      _animateAttack();
-                      gameState.lancarMagia('Bola de Fogo', 20, 2);
-                    },
+                    ? null
+                    : () {
+                        _animateAttack();
+                        gameState.lancarMagia('Bola de Fogo', 20, 2);
+                      },
                 icon: const Icon(Icons.local_fire_department),
                 label: const Text('MAGIA'),
                 style: ElevatedButton.styleFrom(
@@ -426,9 +427,9 @@ class _MissoesPageState extends State<MissoesPage>
             ),
           ],
         ),
-        
+
         const SizedBox(height: 8),
-        
+
         // Itens utilizáveis
         if (gameState.inventario.isNotEmpty)
           SizedBox(
@@ -442,9 +443,9 @@ class _MissoesPageState extends State<MissoesPage>
                   width: 120,
                   margin: const EdgeInsets.only(right: 8),
                   child: ElevatedButton(
-                    onPressed: personagem.estaMorto 
-                      ? null 
-                      : () => gameState.usarItem(item),
+                    onPressed: personagem.estaMorto
+                        ? null
+                        : () => gameState.usarItem(item),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green.shade600,
                       foregroundColor: Colors.white,
@@ -478,12 +479,14 @@ class _MissoesPageState extends State<MissoesPage>
           children: [
             Expanded(
               child: ElevatedButton.icon(
-                onPressed: gameState.personagemAtivo!.hp < gameState.personagemAtivo!.hpMax
-                  ? () {
-                      gameState.personagemAtivo!.curar(30);
-                      gameState.adicionarHistorico('Descansou e recuperou 30 HP');
-                    }
-                  : null,
+                onPressed: gameState.personagemAtivo!.hp <
+                        gameState.personagemAtivo!.hpMax
+                    ? () {
+                        gameState.personagemAtivo!.curar(30);
+                        gameState
+                            .adicionarHistorico('Descansou e recuperou 30 HP');
+                      }
+                    : null,
                 icon: const Icon(Icons.healing),
                 label: const Text('DESCANSAR'),
                 style: ElevatedButton.styleFrom(
@@ -495,12 +498,14 @@ class _MissoesPageState extends State<MissoesPage>
             const SizedBox(width: 8),
             Expanded(
               child: ElevatedButton.icon(
-                onPressed: gameState.personagemAtivo!.mana < gameState.personagemAtivo!.manaMax
-                  ? () {
-                      gameState.personagemAtivo!.recuperarMana(40);
-                      gameState.adicionarHistorico('Meditou e recuperou 40 Mana');
-                    }
-                  : null,
+                onPressed: gameState.personagemAtivo!.mana <
+                        gameState.personagemAtivo!.manaMax
+                    ? () {
+                        gameState.personagemAtivo!.recuperarMana(40);
+                        gameState
+                            .adicionarHistorico('Meditou e recuperou 40 Mana');
+                      }
+                    : null,
                 icon: const Icon(Icons.self_improvement),
                 label: const Text('MEDITAR'),
                 style: ElevatedButton.styleFrom(
@@ -511,7 +516,7 @@ class _MissoesPageState extends State<MissoesPage>
             ),
           ],
         ),
-        
+
         // Inventário
         if (gameState.inventario.isNotEmpty) ...[
           const SizedBox(height: 16),

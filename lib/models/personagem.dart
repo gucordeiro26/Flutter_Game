@@ -1,4 +1,3 @@
-// models/personagem.dart
 enum ClassePersonagem { guerreiro, mago, arqueiro }
 
 class Personagem {
@@ -106,72 +105,31 @@ class Personagem {
         return '🏹';
     }
   }
-}
 
-// models/inimigo.dart
-class Inimigo {
-  String nome;
-  int hp;
-  int hpMax;
-  int ataque;
-  int defesa;
-  int xpRecompensa;
-
-  Inimigo({
-    required this.nome,
-    required this.hp,
-    required this.ataque,
-    required this.defesa,
-    required this.xpRecompensa,
-  }) : hpMax = hp;
-
-  void receberDano(int valor) {
-    hp = (hp - valor).clamp(0, hpMax);
-  }
-
-  bool get estaMorto => hp <= 0;
-  double get hpPercentage => hp / hpMax;
-  
-  String get icone {
-    switch (nome) {
-      case 'Goblin':
-        return '👺';
-      case 'Orc':
-        return '👹';
-      case 'Troll':
-        return '👿';
-      case 'Dragão Menor':
-        return '🐉';
-      default:
-        return '👾';
+  String get nomeClasse {
+    switch (classe) {
+      case ClassePersonagem.guerreiro:
+        return 'Guerreiro';
+      case ClassePersonagem.mago:
+        return 'Mago';
+      case ClassePersonagem.arqueiro:
+        return 'Arqueiro';
     }
   }
-}
 
-// models/item.dart
-enum TipoItem { cura, mana, equipamento }
-
-class Item {
-  String nome;
-  TipoItem tipo;
-  int valor;
-  String descricao;
-
-  Item({
-    required this.nome,
-    required this.tipo,
-    required this.valor,
-    this.descricao = '',
-  });
-
-  String get icone {
-    switch (tipo) {
-      case TipoItem.cura:
-        return '🧪';
-      case TipoItem.mana:
-        return '💙';
-      case TipoItem.equipamento:
-        return '⚔️';
+  List<String> get habilidadesDisponiveis {
+    switch (classe) {
+      case ClassePersonagem.guerreiro:
+        return ['Golpe Poderoso', 'Defesa Férrea', 'Fúria Berserker'];
+      case ClassePersonagem.mago:
+        return ['Bola de Fogo', 'Raio Congelante', 'Cura Mágica'];
+      case ClassePersonagem.arqueiro:
+        return ['Tiro Certeiro', 'Chuva de Flechas', 'Tiro Perfurante'];
     }
+  }
+
+  @override
+  String toString() {
+    return '$nome ($nomeClasse) - Nível $level';
   }
 }
