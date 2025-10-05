@@ -34,6 +34,12 @@ class GameState extends ChangeNotifier {
   ];
 
   // Estado do jogo
+  void limparHistorico() {
+    _historicoGlobal.clear();
+    adicionarHistorico('Histórico foi limpo.'); // Adiciona uma entrada para confirmar
+    notifyListeners();
+  }
+
   Personagem? _personagemAtivo;
   Inimigo? _inimigoAtual;
   final List<Item> _inventario = <Item>[];

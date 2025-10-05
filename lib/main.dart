@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Importe esta linha
 import 'package:provider/provider.dart';
 import 'state/game_state.dart';
 import 'pages/personagens_page.dart';
 import 'pages/itens_page.dart';
 import 'pages/missoes_page.dart';
 import 'pages/cidades_page.dart';
+import 'pages/log_page.dart';
 
 void main() {
   runApp(const MeuApp());
@@ -179,6 +181,74 @@ class HomePage extends StatelessWidget {
                         subtitle: 'Serviços e lojas',
                         page: const CidadesPage(),
                         color: Colors.green,
+                      ),
+
+                      const SizedBox(height: 16), // Espaçamento
+
+                      _buildMenuButton(
+                        context: context,
+                        title: '🏘️ Cidades',
+                        subtitle: 'Serviços e lojas',
+                        page: const CidadesPage(),
+                        color: Colors.green,
+                      ),
+
+                      const SizedBox(height: 16), // Espaçamento
+
+                      // BOTÃO PARA O LOG
+                      _buildMenuButton(
+                        context: context,
+                        title: '📜 Histórico',
+                        subtitle: 'Veja o log de ações',
+                        page: const LogPage(),
+                        color: Colors.blueGrey,
+                      ),
+
+                      const SizedBox(height: 16), // Espaçamento
+
+                      // BOTÃO DE SAIR ADICIONADO AQUI
+                      SizedBox(
+                        width: double.infinity,
+                        height: 80,
+                        child: ElevatedButton(
+                          onPressed: () => SystemNavigator.pop(), // Ação para fechar o app
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey.shade700,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          child: const Row(
+                            children: [
+                              SizedBox(width: 20),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '🚪 Sair do Jogo',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Fecha o aplicativo',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white70,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Icon(Icons.exit_to_app, color: Colors.white70),
+                              SizedBox(width: 20),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),

@@ -45,15 +45,21 @@ class StatusBar extends StatelessWidget {
             color: Colors.grey.shade300,
             borderRadius: BorderRadius.circular(4),
           ),
-          child: FractionallySizedBox(
-            alignment: Alignment.centerLeft,
-            widthFactor: percentage.clamp(0.0, 1.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: displayColor,
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ),
+          child: TweenAnimationBuilder<double>(
+            tween: Tween(begin: 0.0, end: percentage.clamp(0.0, 1.0)),
+            duration: const Duration(milliseconds: 300),
+            builder: (context, value, child) {
+              return FractionallySizedBox(
+                alignment: Alignment.centerLeft,
+                widthFactor: value,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: displayColor,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ],
